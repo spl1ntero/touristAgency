@@ -8,18 +8,18 @@ import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
-app.config['UPLOAD_FOLDER'] = 'uploads/images'
+app.config['UPLOAD_FOLDER'] = 'static/images'
 
 # Load tours data
 if os.path.exists('tours.json'):
-    with open('tours.json', 'r') as f:
+    with open('tours.json', 'r', encoding='utf-8') as f:
         tours = json.load(f)
 else:
     tours = []
 
 # Load bookings data
 if os.path.exists('bookings.json'):
-    with open('bookings.json', 'r') as f:
+    with open('bookings.json', 'r', encoding='utf-8') as f:
         bookings = json.load(f)
 else:
     bookings = []
@@ -49,13 +49,13 @@ def add_tours():
         image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         tour = {
             'id': len(tours) + 1,
-            'image': url_for('static', filename='uploads/images/' + filename),
+            'image': url_for('static', filename='images/' + filename),
             'description': form.description.data,
             'price': float(form.price.data)
         }
         tours.append(tour)
-        with open('tours.json', 'w') as f:
-            json.dump(tours, f)
+        with open('tours.json', 'w', encoding='utf-8') as f:
+            json.dump(tours, f, ensure_ascii=False, indent=4)
         flash('Tour added successfully!', 'success')
         return redirect(url_for('index'))
     return render_template('add_tours.html', form=form)
@@ -83,9 +83,9 @@ def form_tour(tour_id):
             'email': form.email.data
         }
         bookings.append(booking)
-        with open('bookings.json', 'w') as f:
-            json.dump(bookings, f)
-        flash('Booking successful!', 'success')
+        with open('bookings.json', 'w', encoding='utf-8') as f:
+            json.dump(bookings, f, ensure_ascii=False, indent=4)
+        flash('Забронировано удачно!', 'success')
         return redirect(url_for('index'))
 
     return render_template('form_tour.html', tour=tour, form=form)

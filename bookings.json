@@ -1,1 +1,32 @@
-[{"tour_id": 1, "full_name": "John Doe", "tour_dates": "2024-06-15 to 2024-06-20", "email": "john.doe@example.com"}, {"tour_id": 2, "full_name": "Jane Smith", "tour_dates": "2024-07-01 to 2024-07-10", "email": "jane.smith@example.com"}, {"tour_id": 1, "full_name": "\u0421\u0435\u0440\u0433\u0435\u0435\u0432 \u041d\u0438\u043a\u0438\u0442\u0430 \u041c\u0438\u0445\u0430\u0439\u043b\u043e\u0432\u0438\u0447", "tour_dates": "11-12", "email": "sernekit77@gmail.com"}]
+[
+    {
+        "tour_id": 1,
+        "full_name": "John Doe",
+        "tour_dates": "2024-06-15 to 2024-06-20",
+        "email": "john.doe@example.com"
+    },
+    {
+        "tour_id": 2,
+        "full_name": "Jane Smith",
+        "tour_dates": "2024-07-01 to 2024-07-10",
+        "email": "jane.smith@example.com"
+    },
+    {
+        "tour_id": 1,
+        "full_name": "Сергеев Никита Михайлович",
+        "tour_dates": "11-12",
+        "email": "sernekit77@gmail.com"
+    },
+    {
+        "tour_id": 1,
+        "full_name": "Сергеев Никита Михайлович",
+        "tour_dates": "2005-02-11",
+        "email": "sernekit77@gmail.com"
+    },
+    {
+        "tour_id": 1,
+        "full_name": "Сергеев Никита Михайлович",
+        "tour_dates": "2005-02-11",
+        "email": "sernekit77@gmail.com"
+    }
+]
