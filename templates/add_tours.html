@@ -25,7 +25,7 @@
             </div>
           {% endif %}
         {% endwith %}
-        <h1>Add New Tour</h1>
+        <h1>Добавить тур</h1>
         <form method="POST" enctype="multipart/form-data" action="{{ url_for('add_tours') }}">
             {{ form.hidden_tag() }}
             <div class="form-group">

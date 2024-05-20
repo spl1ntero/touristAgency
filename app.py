@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_wtf import FlaskForm
-from wtforms import StringField, DecimalField, FileField, DateField
+from wtforms import StringField, DecimalField, FileField, DateField, PasswordField
 from wtforms.validators import DataRequired, NumberRange, Email
 from werkzeug.utils import secure_filename
 import json
@@ -24,11 +24,13 @@ if os.path.exists('bookings.json'):
 else:
     bookings = []
 
+
 # Form for adding new tours
 class TourForm(FlaskForm):
     image = FileField('Tour Image', validators=[DataRequired()])
     description = StringField('Description', validators=[DataRequired()])
     price = DecimalField('Price', validators=[DataRequired(), NumberRange(min=0)])
+
 
 # Form for booking tours
 class BookingForm(FlaskForm):
@@ -36,12 +38,36 @@ class BookingForm(FlaskForm):
     tour_dates = DateField('Tour Dates', validators=[DataRequired()], format='%Y-%m-%d')
     email = StringField('Email', validators=[DataRequired(), Email()])
 
+
+# Form for login
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+
+
 @app.route('/')
 def index():
     return render_template('index.html', tours=tours)
 
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        if form.username.data == 'admin' and form.password.data == 'admin':
+            session['logged_in'] = True
+            flash('Logged in successfully!', 'success')
+            return redirect(url_for('add_tours'))
+        else:
+            flash('Invalid username or password', 'danger')
+    return render_template('login.html', form=form)
+
+
 @app.route('/add_tours', methods=['GET', 'POST'])
 def add_tours():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
     form = TourForm()
     if form.validate_on_submit():
         image_file = form.image.data
@@ -60,6 +86,7 @@ def add_tours():
         return redirect(url_for('index'))
     return render_template('add_tours.html', form=form)
 
+
 @app.route('/show_tour/<int:tour_id>')
 def show_tour(tour_id):
     tour = next((tour for tour in tours if tour['id'] == tour_id), None)
@@ -67,6 +94,7 @@ def show_tour(tour_id):
         return render_template('show_tour.html', tour=tour)
     else:
         return "Tour not found", 404
+
 
 @app.route('/form_tour/<int:tour_id>', methods=['GET', 'POST'])
 def form_tour(tour_id):
@@ -89,6 +117,7 @@ def form_tour(tour_id):
         return redirect(url_for('index'))
 
     return render_template('form_tour.html', tour=tour, form=form)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
